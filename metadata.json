@@ -1,0 +1,6 @@
+{
+  "name": "TVCSS - Tech Visionary CS Society",
+  "description": "Tech Visionary Computer Science Society at DHA Suffa University DCK Campus. Empowering future innovators.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

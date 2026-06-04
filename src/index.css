@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Anton", sans-serif;
+
+  --color-brand-dark: #0a0b0e;
+  --color-brand-light: #e5e5e5;
+  --color-brand-green: #39FF14;
+  --color-brand-orange: #FF4500;
+  --color-brand-yellow: #fcd34d;
+  --color-brand-pink: #f472b6;
+  --color-brand-cyan: #67e8f9;
+
+  --animate-marquee: marquee 15s linear infinite;
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-brand-dark);
+  color: var(--color-brand-light);
+  overflow-x: hidden;
+}
+
+/* Grayscale + high contrast utility for images */
+.brutalist-image {
+  filter: grayscale(100%) contrast(120%);
+  mix-blend-mode: hard-light;
+}
+
+/* Lighter grayscale for team member portraits — no hard-light blend so they stay visible */
+.team-member-img {
+  filter: grayscale(75%) contrast(105%) brightness(115%);
+}
+
+/* Background grid pattern */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+/* Custom Cursor global cursor hide for hoverable devices */
+@media (hover: hover) and (pointer: fine) {
+  html, body, a, button, input, select, textarea, [role="button"], .cursor-pointer {
+    cursor: none !important;
+  }
+}
+
+/* Pixelated Button with Stair-step Corners & Neon Glow Animation */
+@keyframes pixelGlow {
+  0%, 100% {
+    box-shadow: 0 0 6px #39FF14, inset 0 0 3px rgba(57, 255, 20, 0.3);
+    text-shadow: 0 0 2px rgba(57, 255, 20, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 16px #39FF14, 0 0 2px #39FF14, inset 0 0 6px rgba(57, 255, 20, 0.5);
+    text-shadow: 0 0 6px rgba(57, 255, 20, 0.8);
+    border-color: #ffffff;
+  }
+}
+
+.pixel-btn-glowing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(57, 255, 20, 0.08);
+  border: 2px solid #39FF14;
+  color: #39FF14;
+  padding: 8px 18px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  position: relative;
+  
+  /* Stair-step polygon for retro 8-bit corners */
+  clip-path: polygon(
+    0 4px, 4px 4px, 4px 0, 
+    calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 
+    100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 
+    4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+  );
+  
+  animation: pixelGlow 2s infinite ease-in-out;
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out, border-color 0.15s ease-in-out, transform 0.1s ease;
+}
+
+.pixel-btn-glowing:hover {
+  background-color: #39FF14;
+  color: #0a0b0e;
+  animation: none; /* Stop pulsing animation on hover */
+  border-color: #39FF14;
+  box-shadow: 0 0 20px #39FF14;
+  text-shadow: none;
+}
+
+.pixel-btn-glowing:active {
+  transform: scale(0.96);
+}
+
+/* ── Instagram glow button ── */
+@keyframes instaGlow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(255,69,0,0.5), inset 0 0 4px rgba(255,69,0,0.15);
+    border-color: #FF4500;
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(255,69,0,0.85), 0 0 42px rgba(255,69,0,0.25), inset 0 0 8px rgba(255,69,0,0.2);
+    border-color: #ff6a35;
+  }
+}
+
+.insta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: rgba(10,11,14,0.92);
+  border: 1.5px solid #FF4500;
+  color: #FF4500;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 10px 16px;
+  animation: instaGlow 2s infinite ease-in-out;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.insta-btn:hover {
+  background: #FF4500;
+  color: #0a0b0e;
+  animation: none;
+  box-shadow: 0 0 30px rgba(255,69,0,0.8);
+}
+
+.insta-btn:active {
+  transform: scale(0.97);
+}
+
+/* ── Hero: CRT scanline overlay ── */
+.hero-scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.09) 2px,
+    rgba(0, 0, 0, 0.09) 4px
+  );
+}
+
+/* ── Hero: blinking block cursor ── */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.hero-cursor {
+  display: inline-block;
+  animation: cursor-blink 1s step-end infinite;
+  font-size: 0.7em;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* ── Hero: slow scan-line sweep ── */
+@keyframes scan-sweep {
+  0%   { top: -2px;  opacity: 0; }
+  5%   {             opacity: 1; }
+  95%  {             opacity: 1; }
+  100% { top: 100%;  opacity: 0; }
+}
+.hero-sweep {
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(57,255,20,0.25), transparent);
+  animation: scan-sweep 7s linear infinite;
+  pointer-events: none;
+}
+
+/* ── Hero: glitch effect on display titles ── */
+.hero-glitch {
+  position: relative;
+  display: block;
+}
+.hero-glitch::before,
+.hero-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  overflow: hidden;
+  opacity: 0;
+}
+.hero-glitch:hover::before {
+  opacity: 0.88;
+  color: #39FF14;
+  left: -3px;
+  animation: glitch-clip-1 0.32s steps(1) infinite;
+}
+.hero-glitch:hover::after {
+  opacity: 0.88;
+  color: #FF4500;
+  left: 3px;
+  animation: glitch-clip-2 0.32s steps(1) infinite;
+}
+
+@keyframes glitch-clip-1 {
+  0%   { clip-path: inset(2%  0 91% 0); }
+  11%  { clip-path: inset(38% 0 52% 0); }
+  22%  { clip-path: inset(67% 0 20% 0); }
+  33%  { clip-path: inset(12% 0 80% 0); }
+  44%  { clip-path: inset(54% 0 36% 0); }
+  55%  { clip-path: inset(86% 0  7% 0); }
+  66%  { clip-path: inset(25% 0 65% 0); }
+  77%  { clip-path: inset(74% 0 16% 0); }
+  88%  { clip-path: inset(6%  0 84% 0); }
+  100% { clip-path: inset(2%  0 91% 0); }
+}
+@keyframes glitch-clip-2 {
+  0%   { clip-path: inset(60% 0 26% 0); }
+  11%  { clip-path: inset(5%  0 87% 0); }
+  22%  { clip-path: inset(82% 0  6% 0); }
+  33%  { clip-path: inset(20% 0 70% 0); }
+  44%  { clip-path: inset(46% 0 40% 0); }
+  55%  { clip-path: inset(91% 0  2% 0); }
+  66%  { clip-path: inset(16% 0 74% 0); }
+  77%  { clip-path: inset(63% 0 27% 0); }
+  88%  { clip-path: inset(4%  0 88% 0); }
+  100% { clip-path: inset(60% 0 26% 0); }
+}
