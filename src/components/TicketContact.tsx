@@ -18,6 +18,7 @@ const CATEGORIES = [
 ];
 
 const PAYMENT = {
+  bank:          'Bank Alfalah',
   accountTitle:  'Syed Muhammad Zunnoorain Ali Shah',
   accountNo:     '08301008702146',
   waNumber:      '923378412370',
@@ -431,6 +432,7 @@ export default function TicketContact() {
                 <div className="font-mono text-[8px] uppercase space-y-1.5 text-zinc-600">
                   <p className="font-bold text-zinc-700 tracking-wider">[ Payment After Submit ]</p>
                   <p className="text-zinc-800 font-bold">{PAYMENT.accountTitle}</p>
+                  <p>Bank: <span className="text-zinc-800 font-bold">{PAYMENT.bank}</span></p>
                   <p>A/C: {PAYMENT.accountNo}</p>
                   <p>WA: <span style={{ color: '#FF4500' }} className="font-bold">{PAYMENT.displayNumber}</span></p>
                 </div>
@@ -811,6 +813,7 @@ export default function TicketContact() {
                         <span className="font-bold text-base" style={{ color: '#FF4500' }}>PKR {confirmedFee.toLocaleString()}</span>
                       </div>
                       <p className="font-bold text-zinc-800">{PAYMENT.accountTitle}</p>
+                      <p>Bank: <span className="font-bold text-zinc-800">{PAYMENT.bank}</span></p>
                       <p>A/C No: {PAYMENT.accountNo}</p>
                       <p>WA: <span style={{ color: '#FF4500' }} className="font-bold">{PAYMENT.displayNumber}</span></p>
                     </div>
