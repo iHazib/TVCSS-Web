@@ -139,11 +139,13 @@ export default function TeamSection() {
         {
             name: "Hazib Sheikh",
             role: "Technical Lead",
+            img: "/team/hazib.jpg",
             quote: "Passionate about fostering technical growth and innovation.",
         },
         {
             name: "Muhammad Ousman",
             role: "Director Outreach",
+            img: "/team/ousman.jpg",
             quote: "Building connections that open doors for future technologists.",
         },
         {
