@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
+import { RefreshCw, Download, LogOut, Check, Mail, AlertTriangle, Search, Trash2 } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? '';
-import { RefreshCw, Download, LogOut, Check, Mail, AlertTriangle, Search } from 'lucide-react';
 import CustomCursor from './CustomCursor';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -46,6 +46,7 @@ export default function AdminPanel() {
   const [sData,      setSData]      = useState<SRow[]>([]);
   const [loading,    setLoading]    = useState(false);
   const [verifying,  setVerifying]  = useState<string | null>(null);
+  const [deleting,   setDeleting]   = useState<string | null>(null);
   const [toast,      setToast]      = useState('');
   const [search,     setSearch]     = useState('');
   const [expandedRow,setExpandedRow]= useState<string | null>(null);
@@ -105,6 +106,29 @@ export default function AdminPanel() {
       );
     } catch { flash('Network error.'); }
     finally { setVerifying(null); }
+  };
+
+  const deleteRecord = async (ticketCode: string, type: 'hackathon' | 'seminar') => {
+    const label = type === 'hackathon' ? 'this team and all their seminar entries' : 'this seminar record';
+    if (!window.confirm(`Permanently delete ${label}? This cannot be undone.`)) return;
+    setDeleting(ticketCode);
+    try {
+      const res  = await fetch(`${API_BASE}/api/admin/delete`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: savedKey(), ticketCode, type }),
+      });
+      const data = await res.json();
+      if (!res.ok) { flash(`Error: ${data.error}`); return; }
+      if (type === 'hackathon') {
+        setHData(prev => prev.filter(r => r.ticket_code !== ticketCode));
+        setSData(prev => prev.filter(r => !r.ticket_code.startsWith(ticketCode + '-')));
+      } else {
+        setSData(prev => prev.filter(r => r.ticket_code !== ticketCode));
+      }
+      flash('✓ Record deleted.');
+    } catch { flash('Network error.'); }
+    finally { setDeleting(null); }
   };
 
   const exportCSV = (type: string) => {
@@ -254,7 +278,7 @@ export default function AdminPanel() {
             <table className="w-full text-[10px] font-mono">
               <thead>
                 <tr className="border-b border-white/12 bg-white/[0.03]">
-                  {['Ticket','Team','Leader','Email','WhatsApp','Campus','Category','Size','Fee','Payment','Members'].map(h => (
+                  {['Ticket','Team','Leader','Email','WhatsApp','Campus','Category','Size','Fee','Payment','Members',''].map(h => (
                     <th key={h} className="text-left px-3 py-2.5 font-mono text-[8px] text-white/35 uppercase tracking-widest whitespace-nowrap">
                       {h}
                     </th>
@@ -310,12 +334,25 @@ export default function AdminPanel() {
                           {' '}
                           <span className="text-white/20">{expandedRow === row.ticket_code ? '▲' : '▼'}</span>
                         </td>
+                        <td className="px-3 py-2.5" onClick={e => e.stopPropagation()}>
+                          <button
+                            onClick={() => deleteRecord(row.ticket_code, 'hackathon')}
+                            disabled={deleting === row.ticket_code}
+                            className="flex items-center gap-1 bg-red-500/10 border border-red-500/40 text-red-400 hover:bg-red-500 hover:text-white px-2 py-1 transition-colors disabled:opacity-40 uppercase text-[8px] font-bold"
+                            title="Delete record"
+                          >
+                            {deleting === row.ticket_code
+                              ? <RefreshCw size={10} className="animate-spin" />
+                              : <Trash2 size={10} />
+                            }
+                          </button>
+                        </td>
                       </tr>
 
                       {/* Expanded members row */}
                       {expandedRow === row.ticket_code && mems.length > 0 && (
                         <tr key={`${row.ticket_code}-exp`} className="bg-white/[0.02] border-b border-white/[0.06]">
-                          <td colSpan={11} className="px-6 py-3">
+                          <td colSpan={12} className="px-6 py-3">
                             <p className="text-[8px] text-white/30 uppercase tracking-widest mb-2">Team Members</p>
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                               {/* Leader */}
@@ -349,7 +386,7 @@ export default function AdminPanel() {
             <table className="w-full text-[10px] font-mono">
               <thead>
                 <tr className="border-b border-white/12 bg-white/[0.03]">
-                  {['Ticket','Name','Student ID','Email','Campus / Org','Track','Registered'].map(h => (
+                  {['Ticket','Name','Student ID','Email','Campus / Org','Track','Registered',''].map(h => (
                     <th key={h} className="text-left px-3 py-2.5 font-mono text-[8px] text-white/35 uppercase tracking-widest whitespace-nowrap">
                       {h}
                     </th>
@@ -379,6 +416,19 @@ export default function AdminPanel() {
                     <td className="px-3 py-2.5 text-white/25 whitespace-nowrap">
                       {row.timestamp ? new Date(row.timestamp).toLocaleDateString() : '—'}
                     </td>
+                    <td className="px-3 py-2.5">
+                      <button
+                        onClick={() => deleteRecord(row.ticket_code, 'seminar')}
+                        disabled={deleting === row.ticket_code}
+                        className="flex items-center gap-1 bg-red-500/10 border border-red-500/40 text-red-400 hover:bg-red-500 hover:text-white px-2 py-1 transition-colors disabled:opacity-40 uppercase text-[8px] font-bold"
+                        title="Delete record"
+                      >
+                        {deleting === row.ticket_code
+                          ? <RefreshCw size={10} className="animate-spin" />
+                          : <Trash2 size={10} />
+                        }
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -390,8 +440,8 @@ export default function AdminPanel() {
         {tab === 'hackathon' && (
           <div className="flex gap-2 items-start border border-white/10 bg-white/[0.02] px-4 py-3 text-[9px] text-white/35 uppercase">
             <AlertTriangle size={12} className="shrink-0 mt-0.5 text-brand-orange/60" />
-            Clicking "Mark Paid" updates the CSV and sends a confirmation email to the registrant's address (if configured in .env).
-            Emails require EMAIL_USER and EMAIL_PASS to be set in the server .env file.
+            Clicking "Mark Paid" updates Supabase and sends a confirmation email to the registrant's address (if configured in .env).
+            Emails require EMAIL_USER and EMAIL_PASS to be set. Deleting a hackathon team also removes their seminar mirror entries.
           </div>
         )}
 

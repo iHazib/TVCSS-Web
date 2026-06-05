@@ -8,6 +8,7 @@ import seminar          from './api/register/seminar.js';
 import registrations    from './api/admin/registrations.js';
 import verifyPayment    from './api/admin/verify-payment.js';
 import exportHandler    from './api/admin/export.js';
+import deleteHandler    from './api/admin/delete.js';
 
 const app  = express();
 const PORT = parseInt(process.env.API_PORT ?? '3001', 10);
@@ -21,6 +22,7 @@ app.post('/api/register/hackathon',     h(hackathon));
 app.post('/api/register/seminar',       h(seminar));
 app.get ('/api/admin/registrations',    h(registrations));
 app.post('/api/admin/verify-payment',   h(verifyPayment));
+app.post('/api/admin/delete',           h(deleteHandler));
 app.get ('/api/admin/export',           h(exportHandler));
 
 app.listen(PORT, () => {
