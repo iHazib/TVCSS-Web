@@ -53,6 +53,14 @@ export default function App() {
           <p className="text-[10px] text-white/40 uppercase tracking-wider">
             [ SHAPING THE FUTURE OF COMPUTING ]
           </p>
+          <div className="border-t border-white/10 pt-4 w-full max-w-2xl flex flex-col items-center gap-1">
+            <p className="text-[9px] text-white/25 uppercase tracking-widest">
+              Engineered by <span className="text-white/45 font-bold">Hazib Sheikh</span> — Technical Lead, TVCSS
+            </p>
+            <p className="text-[9px] text-white/20 uppercase tracking-widest">
+              Powered by <span className="text-white/35 font-bold">Hozai</span>
+            </p>
+          </div>
         </footer>
       </main>
     </div>
