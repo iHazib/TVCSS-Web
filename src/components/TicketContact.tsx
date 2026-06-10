@@ -303,19 +303,17 @@ export default function TicketContact() {
                 </TicketShell>
               </motion.div>
 
-              {/* ── SEMINAR TICKET ── */}
-              <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
+              {/* ── SEMINAR CLOSED NOTICE ── */}
+              <div>
                 <TicketShell>
                   <Stub label="SEMINAR" accent="#67e8f9" />
 
                   <div className="flex-1 p-5 sm:p-7 flex flex-col justify-between gap-5" style={{ backgroundColor: '#e8e8eb' }}>
-                    {/* Header row */}
                     <div className="flex justify-between items-start">
                       <span className="font-mono text-[8px] uppercase tracking-widest text-zinc-500">Seminar Pass</span>
                       <div className="bg-zinc-900 text-white font-mono text-[8px] px-2 py-0.5 uppercase tracking-widest">ANNEXURE B</div>
                     </div>
 
-                    {/* Title */}
                     <div>
                       <h3 className="font-display text-4xl sm:text-5xl leading-none uppercase text-zinc-900">CODE-STORM</h3>
                       <p className="font-display text-lg text-zinc-600 leading-none uppercase mt-0.5">2026 // Seminar Only</p>
@@ -328,33 +326,28 @@ export default function TicketContact() {
 
                     <Perf />
 
-                    {/* Free entry */}
-                    <div className="space-y-2">
-                      <p className="font-mono text-[8px] uppercase tracking-wider text-zinc-500">[ Entry Details ]</p>
-                      <div className="flex items-end gap-3">
-                        <span className="font-display text-6xl leading-none text-zinc-900">FREE</span>
-                        <div className="font-mono text-[8px] uppercase text-zinc-500 leading-relaxed pb-1">
-                          <p>No cost · Open to all</p>
-                          <p>Day 1 seminar session</p>
-                          <p>Industry speakers</p>
-                        </div>
+                    <div className="flex-1 flex flex-col items-center justify-center text-center gap-3 py-4">
+                      <div className="font-mono text-[8px] uppercase font-bold tracking-widest px-3 py-1.5 border" style={{ borderColor: '#67e8f9', color: '#67e8f9' }}>
+                        Registrations Closed
                       </div>
+                      <p className="font-mono text-[8px] uppercase text-zinc-500 leading-relaxed max-w-[200px]">
+                        Seminar registration is now closed. See you there!
+                      </p>
                     </div>
 
                     <Perf />
 
-                    {/* CTA */}
                     <button
-                      onClick={() => setTrack('seminar')}
-                      className="w-full font-mono text-xs uppercase font-bold py-3.5 flex justify-between items-center transition-colors hover:opacity-90"
+                      disabled
+                      className="w-full font-mono text-xs uppercase font-bold py-3.5 flex justify-between items-center opacity-40 cursor-not-allowed"
                       style={{ backgroundColor: '#67e8f9', color: '#0a0b0e' }}
                     >
-                      <span>Register for Free Seminar</span>
-                      <span>[↗]</span>
+                      <span>Registrations Closed</span>
+                      <span>[×]</span>
                     </button>
                   </div>
                 </TicketShell>
-              </motion.div>
+              </div>
 
             </div>
           </motion.div>
@@ -593,112 +586,6 @@ export default function TicketContact() {
           </motion.form>
         )}
 
-        {/* ════════════════════════════════════════════════════════════════
-            SEMINAR FORM TICKET
-            ════════════════════════════════════════════════════════════════ */}
-        {track === 'seminar' && !isRegistered && (
-          <motion.form
-            key="seminar"
-            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.3 }}
-            onSubmit={submitSeminar}
-            className="max-w-3xl mx-auto"
-          >
-            <TicketShell>
-              <Stub label="SEMINAR" accent="#67e8f9" />
-
-              {/* ─ Left: seminar info ─────────────────────────────── */}
-              <div className="flex-1 p-5 sm:p-8 flex flex-col gap-5 border-b lg:border-b-0 lg:border-r border-zinc-300">
-
-                <div className="flex justify-between items-start">
-                  <span className="font-mono text-[8px] uppercase tracking-widest text-zinc-500">Seminar Pass</span>
-                  <div className="bg-zinc-900 text-white font-mono text-[8px] px-2 py-0.5 uppercase">ANNEXURE B</div>
-                </div>
-
-                <div>
-                  <h2 className="font-display text-4xl sm:text-5xl leading-none uppercase text-zinc-900">CODE-STORM</h2>
-                  <h3 className="font-display text-xl text-zinc-600 leading-none uppercase mt-0.5">2026 // Seminar Only</h3>
-                  <div className="flex flex-wrap gap-2 mt-3 font-mono text-[8px] uppercase font-bold">
-                    <span className="px-2 py-1" style={{ background: '#67e8f9', color: '#0a0b0e' }}>DSU DCK Campus</span>
-                    <span className="bg-zinc-900 text-white px-2 py-1">Jun 10 Only</span>
-                    <span className="bg-zinc-200 text-zinc-700 border border-zinc-300 px-2 py-1">12:00 – 1:30 PM</span>
-                  </div>
-                </div>
-
-                <Perf />
-
-                <div className="space-y-2 font-mono text-[8px] uppercase text-zinc-600">
-                  <div className="border-l-2 border-zinc-400 pl-2">
-                    <p className="font-bold text-zinc-800">Day 01 — Wed Jun 10</p>
-                    <p>Seminar & Industry Orientation Session</p>
-                    <p>Guest online session · Innovation briefing</p>
-                  </div>
-                </div>
-
-                <Perf />
-
-                <div className="flex items-end gap-3">
-                  <span className="font-display text-6xl leading-none text-zinc-900">FREE</span>
-                  <div className="font-mono text-[8px] uppercase text-zinc-500 leading-relaxed pb-1">
-                    No cost<br/>Open to all students<br/>No hackathon participation
-                  </div>
-                </div>
-
-                <div className="mt-auto flex justify-between items-end font-mono text-[8px] uppercase text-zinc-400">
-                  <div>
-                    <p className="font-display text-xl text-zinc-700">SYS.V2.0</p>
-                    <p className="text-[7px] tracking-widest">BATCH 25-26 // SEM</p>
-                  </div>
-                  <div className="text-right">
-                    <p>24.9628° N</p>
-                    <p>67.0421° E</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* ─ Right: seminar form ────────────────────────────── */}
-              <div className="flex-1 p-5 sm:p-7 flex flex-col gap-4" style={{ backgroundColor: '#f0f0f3' }}>
-                <div>
-                  <p className="font-mono text-[8px] uppercase tracking-widest text-zinc-500">Ticket Ref</p>
-                  <p className="font-mono text-[9px] font-bold uppercase tracking-widest text-zinc-600">C-STORM/SEM/2026</p>
-                  <div className="mt-2 inline-block font-mono text-[9px] uppercase font-bold tracking-widest px-2 py-1 bg-zinc-900" style={{ color: '#67e8f9' }}>
-                    ENTRY: FREE
-                  </div>
-                </div>
-
-                <Perf />
-
-                <div className="space-y-3.5 flex-1">
-                  <p className="font-mono text-[7px] sm:text-[8px] font-bold uppercase tracking-widest text-zinc-500">[ Attendee Details ]</p>
-                  <TField label="Full Name"             value={seminarName}      onChange={setSeminarName}      placeholder="Your full name"         required />
-                  <TField label="Email"                 value={seminarEmail}     onChange={setSeminarEmail}     placeholder="email@domain.com"        required type="email" />
-                  <TField label="Campus / Organization" value={seminarCampus}    onChange={setSeminarCampus}    placeholder="DSU DCK / NEDUET / Other" required />
-                  <TField label="Student ID (Optional)" value={seminarStudentId} onChange={setSeminarStudentId} placeholder="If applicable" />
-                </div>
-
-                {error && (
-                  <div className="flex gap-2 items-start border border-red-400/50 bg-red-50 p-2.5">
-                    <ShieldAlert size={12} className="text-red-500 shrink-0 mt-0.5" />
-                    <p className="font-mono text-[7px] uppercase text-red-600">{error}</p>
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full font-mono text-xs uppercase font-bold py-3.5 flex justify-between items-center transition-opacity hover:opacity-90 disabled:opacity-50 mt-auto"
-                  style={{ backgroundColor: '#67e8f9', color: '#0a0b0e' }}
-                >
-                  <span>{isLoading ? 'Processing...' : 'Register Free Seminar Pass'}</span>
-                  <span>[↗]</span>
-                </button>
-
-                <Barcode />
-              </div>
-
-            </TicketShell>
-          </motion.form>
-        )}
 
         {/* ════════════════════════════════════════════════════════════════
             SUCCESS — completed / stamped ticket
