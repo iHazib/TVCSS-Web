@@ -1,44 +1,17 @@
-import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Instagram } from "lucide-react";
 
-// ── Countdown ────────────────────────────────────────────────────────────────
-
-const EVENT_DATE = new Date(2026, 5, 10, 12, 0, 0); // June 10 2026, 12:00 PM
-
-function useCountdown(target: Date) {
-  const calc = () => {
-    const diff = target.getTime() - Date.now();
-    if (diff <= 0) return { days: 0, hours: 0, mins: 0, secs: 0 };
-    return {
-      days:  Math.floor(diff / 86_400_000),
-      hours: Math.floor((diff % 86_400_000) / 3_600_000),
-      mins:  Math.floor((diff % 3_600_000)  /     60_000),
-      secs:  Math.floor((diff %     60_000)  /      1_000),
-    };
-  };
-  const [t, setT] = useState(calc);
-  useEffect(() => {
-    const id = setInterval(() => setT(calc()), 1000);
-    return () => clearInterval(id);
-  }, []);
-  return t;
+// ── Discord icon ──────────────────────────────────────────────────────────────
+function DiscordIcon({ size = 14 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.012.043.027.057a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+    </svg>
+  );
 }
-
-const pad = (n: number) => String(n).padStart(2, "0");
-
-// ── Countdown units ───────────────────────────────────────────────────────────
-const UNITS = [
-  { label: "DAYS", color: "#FF4500", glow: "rgba(255,69,0,0.55)"    },
-  { label: "HRS",  color: "#fcd34d", glow: "rgba(252,211,77,0.55)"  },
-  { label: "MIN",  color: "#67e8f9", glow: "rgba(103,232,249,0.55)" },
-  { label: "SEC",  color: "#67e8f9", glow: "rgba(103,232,249,0.45)" },
-];
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function HeroGrid() {
-  const { days, hours, mins, secs } = useCountdown(EVENT_DATE);
-  const values = [days, hours, mins, secs];
 
   return (
     <section id="about" className="flex flex-col border-b border-white/20 md:min-h-[calc(100vh-80px)]">
@@ -190,35 +163,31 @@ export default function HeroGrid() {
               </p>
             </div>
 
-            {/* — Countdown — */}
+            {/* — Hackathon Tomorrow Banner — */}
             <div className="relative z-10">
               <p className="font-mono text-[7px] sm:text-[8px] uppercase tracking-widest text-white/25 mb-3">
-                [ T-Minus Launch ]
+                [ Status Update ]
               </p>
-              <div className="flex items-end gap-4 sm:gap-6 md:gap-8">
-                {UNITS.map(({ label, color, glow }, i) => (
-                  <div key={label} className="flex flex-col items-center">
-                    <motion.span
-                      key={`${label}-${values[i]}`}
-                      initial={{ y: -8, opacity: 0.5 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="font-display text-4xl sm:text-5xl md:text-6xl leading-none tabular-nums"
-                      style={{
-                        color,
-                        textShadow: `0 0 24px ${glow}, 0 0 8px ${glow}`,
-                      }}
-                    >
-                      {pad(values[i])}
-                    </motion.span>
-                    <span
-                      className="font-mono text-[7px] sm:text-[8px] uppercase tracking-widest mt-1"
-                      style={{ color, opacity: 0.45 }}
-                    >
-                      {label}
-                    </span>
-                  </div>
-                ))}
+              <div className="border border-white/10 bg-white/[0.03] p-4 space-y-3">
+                <p
+                  className="font-display text-2xl sm:text-3xl md:text-4xl uppercase leading-none"
+                  style={{ color: "#fcd34d", textShadow: "0 0 24px rgba(252,211,77,0.4)" }}
+                >
+                  Hackathon Starts Tomorrow
+                </p>
+                <p className="font-mono text-[8px] sm:text-[9px] text-white/45 uppercase tracking-wide">
+                  Be updated here — join our Discord for live announcements
+                </p>
+                <a
+                  href="https://discord.gg/4SgeVFN9"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-mono text-[9px] sm:text-xs uppercase font-bold px-4 py-2.5 transition-opacity hover:opacity-85"
+                  style={{ backgroundColor: "#5865F2", color: "#fff" }}
+                >
+                  <DiscordIcon size={14} />
+                  <span>Join Discord for Updates</span>
+                </a>
               </div>
             </div>
           </motion.div>
