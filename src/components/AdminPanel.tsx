@@ -46,6 +46,7 @@ export default function AdminPanel() {
   const [sData,      setSData]      = useState<SRow[]>([]);
   const [loading,    setLoading]    = useState(false);
   const [verifying,  setVerifying]  = useState<string | null>(null);
+  const [reminding,  setReminding]  = useState<string | null>(null);
   const [deleting,   setDeleting]   = useState<string | null>(null);
   const [toast,      setToast]      = useState('');
   const [search,     setSearch]     = useState('');
@@ -106,6 +107,21 @@ export default function AdminPanel() {
       );
     } catch { flash('Network error.'); }
     finally { setVerifying(null); }
+  };
+
+  const sendReminder = async (ticketCode: string, type: 'oncampus' | 'offcampus') => {
+    setReminding(ticketCode + type);
+    try {
+      const res  = await fetch(`${API_BASE}/api/admin/send-reminder`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: savedKey(), ticketCode, type }),
+      });
+      const data = await res.json();
+      if (!res.ok) { flash(`Error: ${data.error}`); return; }
+      flash(`✓ ${type === 'oncampus' ? 'On-campus' : 'Off-campus'} reminder sent to ${data.emailAddr}`);
+    } catch { flash('Network error.'); }
+    finally { setReminding(null); }
   };
 
   const deleteRecord = async (ticketCode: string, type: 'hackathon' | 'seminar') => {
@@ -312,9 +328,37 @@ export default function AdminPanel() {
                         <td className="px-3 py-2.5 text-brand-orange whitespace-nowrap font-bold">{parseInt(row.total_fee_pkr).toLocaleString()}</td>
                         <td className="px-3 py-2.5 whitespace-nowrap">
                           {paid ? (
-                            <span className="flex items-center gap-1 text-brand-green font-bold">
-                              <Check size={11} /> PAID
-                            </span>
+                            <div className="flex flex-col gap-1.5">
+                              <span className="flex items-center gap-1 text-brand-green font-bold">
+                                <Check size={11} /> PAID
+                              </span>
+                              <div className="flex gap-1" onClick={e => e.stopPropagation()}>
+                                <button
+                                  onClick={() => sendReminder(row.ticket_code, 'oncampus')}
+                                  disabled={reminding !== null}
+                                  className="flex items-center gap-1 bg-brand-cyan/10 border border-brand-cyan/40 text-brand-cyan hover:bg-brand-cyan hover:text-brand-dark px-1.5 py-0.5 transition-colors disabled:opacity-40 uppercase text-[7px] font-bold whitespace-nowrap"
+                                  title="Send on-campus reminder"
+                                >
+                                  {reminding === row.ticket_code + 'oncampus'
+                                    ? <RefreshCw size={8} className="animate-spin" />
+                                    : <Mail size={8} />
+                                  }
+                                  On-Site
+                                </button>
+                                <button
+                                  onClick={() => sendReminder(row.ticket_code, 'offcampus')}
+                                  disabled={reminding !== null}
+                                  className="flex items-center gap-1 bg-brand-yellow/10 border border-brand-yellow/40 text-brand-yellow hover:bg-brand-yellow hover:text-brand-dark px-1.5 py-0.5 transition-colors disabled:opacity-40 uppercase text-[7px] font-bold whitespace-nowrap"
+                                  title="Send off-campus reminder"
+                                >
+                                  {reminding === row.ticket_code + 'offcampus'
+                                    ? <RefreshCw size={8} className="animate-spin" />
+                                    : <Mail size={8} />
+                                  }
+                                  Remote
+                                </button>
+                              </div>
+                            </div>
                           ) : (
                             <button
                               onClick={e => { e.stopPropagation(); verifyPayment(row.ticket_code); }}
